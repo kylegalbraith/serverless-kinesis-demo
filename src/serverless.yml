@@ -1,0 +1,40 @@
+service:
+  name: serverless-kinesis-demo
+# app and org for use with dashboard.serverless.com
+#app: your-app-name
+#org: your-org-name
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+
+# Add the serverless-webpack plugin
+plugins:
+  - serverless-webpack
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+
+functions:
+  ingestion:
+    handler: handler.ingestStream
+    events:
+      - stream:
+          type: kinesis
+          arn: 
+            Fn::GetAtt:
+              - OurStream
+              - Arn
+
+resources:
+  Resources:
+    OurStream:
+      Type: AWS::Kinesis::Stream
+      Properties:
+        Name: OurStream
+        RetentionPeriodHours: 24
+        ShardCount: 3
