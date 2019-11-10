@@ -26,6 +26,13 @@ functions:
             Fn::GetAtt:
               - OurStream
               - Arn
+  realtimeData:
+    handler: handler.feedStream
+    environment:
+      KINESIS_STREAM:
+        Fn::GetAtt:
+          - OurStream
+          - Name
 
 resources:
   Resources:
