@@ -8,10 +8,22 @@ export const ingestStream: KinesisStreamHandler = async (event, _context) => {
   });
 }
 
-export const feedStream: Handler = async (event, _context: Context) => {
+export const feedStream: Handler = async (_, _context: Context) => {
   const stream = process.env.KINESIS_STREAM;
   const client = new Kinesis({region: 'us-east-1'});
+  let loopIter = 0
   while(_context.getRemainingTimeInMillis() > 30) {
-    
+    loopIter++;
+    const partKey = `loop_${loopIter}`;
+    const payload = JSON.stringify({
+      'event_x': Math.random() * 10,
+      'event_y': Math.random() * 20
+    });
+
+    client.putRecord({
+      StreamName: stream,
+      PartitionKey: partKey,
+      Data: payload
+    });
   }
 }

@@ -28,6 +28,7 @@ functions:
               - Arn
   realtimeData:
     handler: handler.feedStream
+    timeout: 120
     environment:
       KINESIS_STREAM:
         Fn::GetAtt:
