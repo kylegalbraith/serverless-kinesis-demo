@@ -15,6 +15,17 @@ provider:
   runtime: nodejs10.x
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+  iamManagedPolicies:
+    - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 'kinesis:PutRecord'
+        - 'kinesis:GetRecord'
+      Resource:
+        Fn::GetAtt:
+          - OurStream
+          - Arn
 
 functions:
   ingestion:
@@ -30,10 +41,7 @@ functions:
     handler: handler.feedStream
     timeout: 120
     environment:
-      KINESIS_STREAM:
-        Fn::GetAtt:
-          - OurStream
-          - Name
+      KINESIS_STREAM: OurStream
 
 resources:
   Resources:

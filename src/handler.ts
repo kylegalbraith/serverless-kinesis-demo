@@ -20,10 +20,12 @@ export const feedStream: Handler = async (_, _context: Context) => {
       'event_y': Math.random() * 20
     });
 
-    client.putRecord({
+    let resp = await client.putRecord({
       StreamName: stream,
       PartitionKey: partKey,
       Data: payload
-    });
+    }).promise();
+    
+    console.log(resp);
   }
 }
