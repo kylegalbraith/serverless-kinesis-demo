@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.568.0",
+    "bl": "^4.0.3",
     "source-map-support": "^0.5.10"
   },
   "devDependencies": {
