@@ -9,7 +9,6 @@ export const ingestStream: KinesisStreamHandler = async (event, _context) => {
 };
 
 export const feedStream: Handler = async (_, _context: Context) => {
-  console.log("start event");
   const stream = process.env.KINESIS_STREAM;
   const client = new Kinesis({ region: "us-east-1" });
   let loopIter = 0;
